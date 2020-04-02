@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div style="overflow-x:auto;">
+    <form action="{{ url_for('auth.modify_user_post') }}" method="POST">
+        <table id="user_mod_table" class="centerTable">
+            <tr>
+                <td colspan="2">
+                    <h1 class="title">
+                        Modify: {{user.name}}
+                    </h1>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <div class="notification is-danger">
+                        {{ messages[0] }}.
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+                </td>
+            </tr>
+            <tr>
+                <td>User ID:</td>
+                <td>
+                    <input class="input is-small" type="text" value="{{user.id}}" disabled>
+                    <input type="text" name="id" value="{{user.id}}" hidden>
+                </td>
+            </tr>
+            <tr>
+                <td>User Name:</td>
+                <td><input class="input is-small" type="text" name="name" value="{{user.name}}" required></td>
+            </tr>
+            <tr>
+                <td>User email:</td>
+                <td><input class="input is-small" type="email" name="email" value="{{user.email}}" required></td>
+            </tr>
+            <tr>
+                <td>User Type:</td>
+                <td>
+                    <div class="select is-small">
+                        <select name="type">
+                            {% if user.user_type == 'ADMIN' %}
+                            <option value="ADMIN" selected>ADMIN</option>
+                            <option value="MOD">MOD</option>
+                            <option value="USER">USER</option>
+                            {% elif user.user_type == 'MOD' %}
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="MOD" selected>MOD</option>
+                            <option value="USER">USER</option>
+                            {% elif user.user_type == 'USER' %}
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="MOD">MOD</option>
+                            <option value="USER" selected>USER</option>
+                            {% else %}
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="MOD">MOD</option>
+                            <option value="USER" selected>USER</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Disabled:</td>
+                <td>
+                    <div class="select is-small">
+                        <select name="state">
+                            {% if user.disabled %}
+                            <option value="1" selected>Disabled</option>
+                            <option value="0">Enabled</option>
+                            {% else %}
+                            <option value="1">Disabled</option>
+                            <option value="0" selected>Enabled</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td style="text-align:center;" colspan="2">
+                    <button class="button is-primary is-inverted is-outlined">Save Changes</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br>
+    <a class="button is-primary is-inverted is-outlined" href="{{ url_for('auth.delete_user', id=user.id) }}">
+        Delete User
+    </a>
+    <a class="button is-primary is-inverted is-outlined" href="{{ url_for('auth.change_password', id=user.id) }}">
+        Change Password
+    </a>
+</div>
+
+{% endblock %}

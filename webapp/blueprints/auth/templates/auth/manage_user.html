@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="title">
+    User Manager
+</h1>
+<div style="overflow-x:auto;">
+    <table id="users_table">
+        <tr>
+            <th>User ID</th>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Enabled/Disabled</th>
+            <th>Last Login</th>
+            <th></th>
+        </tr>
+        {% for content in user_list %}
+        <tr>
+            <td>{{content.id}}</td>
+            <td>{{content.email}}</td>
+            <td>{{content.name}}</td>
+            <td>
+                {% if content.disabled %}
+                Disabled
+                {% else %}
+                Enabled
+                {% endif %}
+            </td>
+            <td>{{content.last_login}}</td>
+            <td><a class="button is-primary is-inverted is-outlined"
+                    href="{{ url_for('auth.modify_user', id=content.id) }}">
+                    Modify User
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<br>
+<a class="button is-primary is-inverted is-outlined" href="{{ url_for('auth.create_user') }}">
+    Add User
+</a>
+</td>
+{% endblock %}

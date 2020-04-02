@@ -1,0 +1,33 @@
+#users_table {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#users_table td, #users_table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#users_table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #00b89c;
+  color: white;
+}
+
+#user_mod_table {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 40%;
+
+}
+
+.centerTable { margin: 0px auto; }
+
+#user_mod_table tr:nth-child(odd){background-color: #00b89c;}
+
+#user_mod_table td, #user_mod_table th {
+  padding: 8px;
+}

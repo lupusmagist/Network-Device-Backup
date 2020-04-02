@@ -1,0 +1,45 @@
+# https://docs.docker.com/compose/compose-file/
+version: '3.7'
+services:
+  appserver:
+    build: ./webapp
+    command: >
+      gunicorn -b 0.0.0.0:8000
+        --access-logfile -
+        --reload
+        wsgi:app
+    environment:
+      PYTHONUNBUFFERED: 'true'
+    depends_on:
+      - database
+      - nginx
+    volumes:
+      - '.:/webapp'
+      # Format is: Path on host:absolute path in container (Mountpoint)
+      # - 'data-volume:/data'
+    ports:
+      - '8000:8000'
+
+  nginx:
+    image: 'nginx:1.17-alpine'
+    volumes:
+      - './websrv/nginx.conf:/etc/nginx/nginx.conf'
+    ports:
+      - '80:80'
+      - '443:443'
+
+  database:
+    image: 'postgres:12' # use latest official postgres version
+    env_file:
+      - .env # configure postgres
+    volumes:
+      - database-data:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+
+# Volumes are sharable spaces made and controlled by Docker
+# These spaces can be used between containers.
+# These spaces cannot be accessed from outside Docker.
+volumes:
+  # data-volume:
+  database-data:
