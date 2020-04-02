@@ -1,6 +1,5 @@
 """ Settings File """
 from datetime import timedelta
-from os import environ
 
 
 class Config:
@@ -36,7 +35,6 @@ class ProductionConfig(Config):
 
 
 class DevelopmentConfig(Config):
-    FLASK_DEBUG = environ.get('FLASK_DEBUG')
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///db.sqlite'
     SQLALCHEMY_TRACK_MODIFICATIONS = False

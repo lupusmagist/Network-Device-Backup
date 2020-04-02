@@ -1,7 +1,9 @@
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+from environs import Env
 
+env = Env()
 db = SQLAlchemy()
 
 
@@ -17,7 +19,13 @@ def create_app(settings_override=None):
     app = Flask(__name__, instance_relative_config=False)
 
     # Load config from file
-    app.config.from_object('config.settings.ProductionConfig')
+    env.read_env()
+    FLASK_DEBUG = env.bool("FLASK_DEBUG")
+    if FLASK_DEBUG:
+        app.config.from_object('config.settings.DevelopmentConfig')
+        print('running in debug mode')
+    else:
+        app.config.from_object('config.settings.ProductionConfig')
 
     # init the DB
     db.init_app(app)
@@ -61,6 +69,7 @@ def add_default_user():
         # add the new user to the database
         db.session.add(new_user)
         new_user.set_password("password")
+        new_user.set_user_type("ADMIN")
         db.session.commit()
 
 
