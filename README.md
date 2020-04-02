@@ -2,7 +2,7 @@
 
 *The well chosen and descriptive name above basicly says it all.*
 
-This is a Python/Flask/Netmiko/Paramiko/Docker/nginx/PostgreSQL app that provides a UI for backing up of network devices via ssh.
+This is a Python/Flask/Netmiko/Paramiko/Docker/Nginx/PostgreSQL app that provides a UI for backing up of network devices via ssh.
 
 Commands are issued to the device to create a text export and this export is saved to the database in a encryted form.
 
@@ -16,7 +16,16 @@ If you have a exsiting database server that you would like to use, disable the d
 
 ### Starting the app in default mode.
 
-Ensure that Docker and Docker-Compose is installed.
+* Ensure that Docker and Docker-Compose is installed.
+* Create a folder for the app and in that folder do:
+    * git clone https://github.com/lupusmagist/Network-Device-Backup.git
+* cd into the app folder
+* create a new .env file and copy the contents below into the file. (You can change any of the varibles)
+'''COMPOSE_PROJECT_NAME=Device_Backup
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=1q2w3e4r5
+POSTGRES_DB=DM
+'''
 
 
 gunicorn -b 0.0.0.0:8000 --log-file=- -e FLASK_DEBUG=development  --worker-tmp-dir /dev/shm "webapp:create_app()"
