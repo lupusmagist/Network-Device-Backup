@@ -21,11 +21,12 @@ If you have a exsiting database server that you would like to use, disable the d
     * git clone https://github.com/lupusmagist/Network-Device-Backup.git
 * cd into the app folder
 * create a new .env file and copy the contents below into the file. (You can change any of the varibles)
-'''COMPOSE_PROJECT_NAME=Device_Backup
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=1q2w3e4r5
+```
+COMPOSE_PROJECT_NAME=Device_Backup
+POSTGRES_USER=dbuser
+POSTGRES_PASSWORD=dbpassword
 POSTGRES_DB=DM
-'''
+```
+* run 'docker-compose up'
 
 
-gunicorn -b 0.0.0.0:8000 --log-file=- -e FLASK_DEBUG=development  --worker-tmp-dir /dev/shm "webapp:create_app()"
