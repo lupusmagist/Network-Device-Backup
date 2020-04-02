@@ -30,4 +30,5 @@ POSTGRES_DB=DM
 * run 'docker-compose up'
 
 In your web browser of choice connect to: http://your-host-ip
-
+Default username: admin@example.co.za
+Default password: password
