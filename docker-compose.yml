@@ -12,7 +12,6 @@ services:
       PYTHONUNBUFFERED: 'true'
     depends_on:
       - database
-      - nginx
     volumes:
       - '.:/webapp'
       # Format is: Path on host:absolute path in container (Mountpoint)
@@ -27,6 +26,8 @@ services:
     ports:
       - '80:80'
       - '443:443'
+    depends_on:
+      - appserver
 
   database:
     image: 'postgres:12' # use latest official postgres version
