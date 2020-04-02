@@ -17,10 +17,10 @@ If you have a existing database server that you would like to use, disable the d
 ### Starting the app in default mode.
 
 * Ensure that Docker and Docker-Compose is installed.
-* Create a folder for the app and in that folder do:
-    * git clone https://github.com/lupusmagist/Network-Device-Backup.git
+* git clone https://github.com/lupusmagist/Network-Device-Backup.git
 * cd into the app folder
-* create a new .env file and copy the contents below into the file. (You can change any of the variables)
+* create a new .env file and copy the contents below into the file.
+    * If you change the Postgres variables, change the ProductionConfig class in the settings.py file as well.
 ```
 COMPOSE_PROJECT_NAME=Device_Backup
 POSTGRES_USER=dbuser
