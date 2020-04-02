@@ -26,6 +26,7 @@ COMPOSE_PROJECT_NAME=Device_Backup
 POSTGRES_USER=dbuser
 POSTGRES_PASSWORD=dbpassword
 POSTGRES_DB=DM
+FLASK_DEBUG=false
 ```
 * run 'docker-compose up'
 
