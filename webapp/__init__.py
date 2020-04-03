@@ -30,8 +30,11 @@ def create_app(settings_override=None):
     # init the DB
     db.init_app(app)
 
-    # Setup login manager
+    # Import the database models
     from webapp.models.user import Web_User
+    # from webapp.models.devices import Devices
+
+    # Setup login manager
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
@@ -75,4 +78,4 @@ def add_default_user():
 
 if __name__ == '__main__':
     app = create_app()
-    app.run('127.0.0.1', 5000, debug=True)
+    app.run('127.0.0.1', 5000, debug=true)

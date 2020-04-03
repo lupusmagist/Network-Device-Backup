@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="overflow-x:auto;">
+    <form method="POST" action="{{ url_for('main.device_add') }}" onsubmit="return checkForm(this);">
+        <table id="device_mod_table" class="centerTable">
+            <tr>
+                <td colspan="2">
+                    <h1 class="title">
+                        Add new device
+                    </h1>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <div class="notification is-danger">
+                        {{ messages[0] }}.
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+                </td>
+            </tr>
+            <tr>
+                <td>Device name:</td>
+                <td><input class="input is-small" type="text" name="name" required></td>
+            </tr>
+            <tr>
+                <td>IP Address:</td>
+                <td><input class="input is-small" type="text" name="ipaddress" required id="ipaddress"></td>
+            </tr>
+            <tr>
+                <td>Description:</td>
+                <td><input class="input is-small" type="text" name="description"></td>
+            </tr>
+            <tr>
+                <td>Username:</td>
+                <td><input class="input is-small" type="text" name="username"></td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td><input class="input is-small" type="text" name="password"></td>
+            </tr>
+            <tr>
+                <td>Command for backup:</td>
+                <td><input class="input is-small" type="text" name="command"></td>
+            </tr>
+            <tr>
+                <td>Connection Type:</td>
+                <td>
+                    <div class="select is-small">
+                        <select name="type">
+                            <option value="SSH" selected>SSH</option>
+                            <option value="TELNET">TELNET</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td style="text-align:center;" colspan="2">
+                    <button class="button is-primary is-inverted is-outlined">Add Device</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script>
+    function checkForm(form) {
+
+        // Validation of IP address
+        var ipformat = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+        if (!form.ipaddress.value.match(ipformat)) {
+            alert("You have entered an invalid IP address!");
+            document.getElementById("ipaddress").focus();
+            return false;
+        }
+
+        // validation was successful
+        return true;
+    }
+
+</script>
+{% endblock %}

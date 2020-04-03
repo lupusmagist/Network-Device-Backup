@@ -2,7 +2,39 @@
 
 {% block content %}
 <h1 class="title">
-  Network Device Backup
+  Device List
 </h1>
-
+<div style="overflow-x:auto;">
+  <table id="device_table">
+    <tr>
+      <th>Name</th>
+      <th>IP</th>
+      <th>Description</th>
+      <th></th>
+      <th></th>
+      <th>Disabled</th>
+    </tr>
+    {% for device in devicelist %}
+    <tr>
+      <th><a>{{ device.name }}</a></th>
+      <th><a style="font-weight: bold;">{{ device.device_ip }}</a></th>
+      <th><a style="font-weight: bold;">{{ device.description }}</a></th>
+      <th><a class="button is-primary is-inverted is-outlined" href="{{ url_for('main.device_backup', id=device.id) }}">
+          Backup Now</a></th>
+      <th><a class="button is-primary is-inverted is-outlined" href="{{ url_for('main.device_modify', id=device.id) }}">
+          Edit</a></th>
+      <th>{% if device.disabled %}
+        Disabled
+        {% else %}
+        Enabled
+        {% endif %}
+      </th>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+<br>
+<a class="button is-primary is-inverted is-outlined" href="{{ url_for('main.device_add') }}">
+  Add Device
+</a>
 {% endblock %}

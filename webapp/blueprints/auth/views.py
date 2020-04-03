@@ -81,7 +81,7 @@ def modify_user_post():
         user_state = False
 
     # print("Form username: " + user_id)
-    print("Form username: " + user_type)
+    # print("Form username: " + user_type)
 
     # if this returns a user, then the email already exists in database
     user = db.session.query(Web_User).filter_by(id=user_id).first()
@@ -92,8 +92,8 @@ def modify_user_post():
     user.disabled = user_state
     user.user_type = user_type
 
-    print("DB username: " + user.name)
-    print("DB username: " + user.email)
+    # print("DB username: " + user.name)
+    # print("DB username: " + user.email)
     # print("DB username: " + user.disabled)
     # print("DB username: " + user.user_type)
 
