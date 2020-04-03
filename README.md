@@ -31,5 +31,5 @@ FLASK_DEBUG=false
 * run 'docker-compose up'
 
 In your web browser of choice connect to: http://your-host-ip
-Default username: admin@example.co.za
+Default username: admin@example.com
 Default password: password
