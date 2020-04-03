@@ -63,7 +63,7 @@ def add_default_user():
 
     if not users:
         # User table is empty, create a default user
-        new_user = Web_User(email="admin@example.co.za", name="admin",
+        new_user = Web_User(email="admin@example.com", name="admin",
                             disabled=False)
 
         # add the new user to the database
