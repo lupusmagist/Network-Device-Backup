@@ -43,16 +43,17 @@
                 <td><input class="input is-small" type="text" name="password"></td>
             </tr>
             <tr>
-                <td>Command for backup:</td>
-                <td><input class="input is-small" type="text" name="command"></td>
+                <td>SSH Port:</td>
+                <td><input class="input is-small" type="text" name="sshport" value="22"></td>
             </tr>
             <tr>
                 <td>Connection Type:</td>
                 <td>
                     <div class="select is-small">
                         <select name="type">
-                            <option value="SSH" selected>SSH</option>
-                            <option value="TELNET">TELNET</option>
+                            <option value="MIKROTIK" selected>Mikrotik Device</option>
+                            <option value="HP">HP Switch</option>
+                            <option value="UBNTRADIO">Ubiquiti Radio</option>
                         </select>
                     </div>
                 </td>

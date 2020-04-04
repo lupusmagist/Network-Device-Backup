@@ -9,7 +9,9 @@ services:
         --reload
         wsgi:app
     environment:
-      PYTHONUNBUFFERED: 'true'
+      - PYTHONUNBUFFERED=1
+      - TZ=Africa/Johannesburg
+      - DEBIAN_FRONTEND=noninteractive
     depends_on:
       - database
     volumes:

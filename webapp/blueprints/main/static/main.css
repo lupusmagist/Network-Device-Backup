@@ -1,12 +1,17 @@
 #device_table {
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   border-collapse: collapse;
+  table-layout: fixed;
   width: 100%;
 }
 
 #device_table td, #device_table th {
   border: 1px solid #ddd;
   padding: 8px;
+}
+
+#device_table td {
+  padding: 3px;
 }
 
 #device_table th {

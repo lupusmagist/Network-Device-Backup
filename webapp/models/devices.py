@@ -1,15 +1,16 @@
 from webapp import db
+from datetime import datetime
 
 
 class Devices(db.Model):
     """
     Model for keeping devices.
     Set the connection type
-        set_conn_type("SSH")
-        supported options: SSH, TELNET
+        set_conn_type("MIKROTIK")
+        supported options: MIKROTIK, HP, UBNTRADIO
     Check connection type
-        check_conn_type("SSH")
-        Returns True if connection type is SSH, False otherwise.
+        check_conn_type("MIKROTIK")
+        Returns True if connection type is MIKROTIK, False otherwise.
     Check device enable/disabled state:
         is_disabled() returns true or false.
     Enable and disable device:
@@ -23,20 +24,20 @@ class Devices(db.Model):
     device_ip = db.Column(db.String(80))
     description = db.Column(db.String(200))
     conn_type = db.Column(db.String(80))
+    ssh_port = db.Column(db.Integer)
     username = db.Column(db.String(200))
     password = db.Column(db.String(200))
-    command = db.Column(db.String(200))
     disabled = db.Column(db.Boolean)
 
     def set_conn_type(self, conntype):
-        accepted_types = {'SSH', 'TELNET'}
+        accepted_types = {'MIKROTIK', 'HP', 'UBNTRADIO'}
         if conntype in accepted_types:
             self.conn_type = conntype
         else:
             return -1
 
     def check_conn_type(self, conntype):
-        accepted_types = {'SSH', 'TELNET'}
+        accepted_types = {'MIKROTIK', 'HP', 'UBNTRADIO'}
         if conntype in accepted_types:
             if conntype == self.conn_type:
                 return True
@@ -50,3 +51,17 @@ class Devices(db.Model):
 
     def set_disabled(self, state):
         self.disabled = state
+
+
+class Backups(db.Model):
+    """
+    Model for keeping backups.
+    """
+    __tablename__ = 'backups'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    device_id = db.Column(db.Integer)
+    filename = db.Column(db.String(80))
+    filedata = db.Column(db.String())
+    uploaddate = db.Column(
+        db.DateTime, default=datetime.now, index=True)

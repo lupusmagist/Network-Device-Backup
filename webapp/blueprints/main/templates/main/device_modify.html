@@ -46,20 +46,26 @@
                 <td><input class="input is-small" type="text" name="password" value="{{device.password}}"></td>
             </tr>
             <tr>
-                <td>Command for backup:</td>
-                <td><input class="input is-small" type="text" name="command" value="{{device.command}}"></td>
+                <td>SSH Port:</td>
+                <td><input class="input is-small" type="text" name="sshport" value="{{device.ssh_port}}"></td>
             </tr>
             <tr>
                 <td>Connection Type:</td>
                 <td>
                     <div class="select is-small">
                         <select name="type">
-                            {% if device.conn_type == 'SSH' %}
-                            <option value="SSH" selected>SSH</option>
-                            <option value="TELNET">TELNET</option>
+                            {% if device.conn_type == 'MIKROTIK' %}
+                            <option value="MIKROTIK" selected>Mikrotik Device</option>
+                            <option value="HP">HP Switch</option>
+                            <option value="UBNTRADIO">Ubiquiti Radio</option>
+                            {% elif device.conn_type == 'HP' %}
+                            <option value="MIKROTIK">Mikrotik Device</option>
+                            <option value="HP" selected>HP Switch</option>
+                            <option value="UBNTRADIO">Ubiquiti Radio</option>
                             {% else %}
-                            <option value="SSH">SSH</option>
-                            <option value="TELNET" selected>TELNET</option>
+                            <option value="MIKROTIK">Mikrotik Device</option>
+                            <option value="HP">HP Switch</option>
+                            <option value="UBNTRADIO" selected>Ubiquiti Radio</option>
                             {% endif %}
                         </select>
                     </div>

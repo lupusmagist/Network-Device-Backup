@@ -10,25 +10,28 @@
       <th>Name</th>
       <th>IP</th>
       <th>Description</th>
-      <th></th>
-      <th></th>
       <th>Disabled</th>
+      <th colspan="2"></th>
     </tr>
     {% for device in devicelist %}
     <tr>
-      <th><a>{{ device.name }}</a></th>
-      <th><a style="font-weight: bold;">{{ device.device_ip }}</a></th>
-      <th><a style="font-weight: bold;">{{ device.description }}</a></th>
-      <th><a class="button is-primary is-inverted is-outlined" href="{{ url_for('main.device_backup', id=device.id) }}">
-          Backup Now</a></th>
-      <th><a class="button is-primary is-inverted is-outlined" href="{{ url_for('main.device_modify', id=device.id) }}">
-          Edit</a></th>
-      <th>{% if device.disabled %}
+      <td><a>{{ device.name }}</a></td>
+      <td><a>{{ device.device_ip }}</a></td>
+      <td><a>{{ device.description }}</a></td>
+      <td>{% if device.disabled %}
         Disabled
         {% else %}
         Enabled
         {% endif %}
-      </th>
+        </th>
+      <td colspan="2" style="text-align: center;">
+        <a class="button is-primary is-inverted is-outlined" href="{{ url_for('main.device_modify', id=device.id) }}">
+          Edit</a>
+        <a class="button is-primary is-inverted is-outlined" href="{{ url_for('main.device_backup', did=device.id) }}">
+          Backup Now</a>
+        <a class="button is-primary is-inverted is-outlined" href="{{ url_for('main.backup_list', did=device.id) }}">
+          View Backups</a>
+      </td>
     </tr>
     {% endfor %}
   </table>
