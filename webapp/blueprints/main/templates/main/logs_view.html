@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="title">
+    Logs:
+</h1>
+<div>
+    <a class="button is-primary is-inverted is-outlined" href="{{ url_for('main.logs_delete') }}">
+        Clear Logs
+    </a>
+</div>
+<br>
+
+<div style="overflow-x:auto;">
+    <table id="device_mod_table" class="centerTable">
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <tr>
+            <td colspan="3">
+                <div class="notification is-danger">
+                    {{ messages[0] }}.
+                </div>
+            </td>
+        </tr>
+        {% endif %}
+        {% endwith %}
+
+        {% if loglist|length > 0 %}
+        <tr>
+            <th>Date</th>
+            <th colspan="3"></th>
+        </tr>
+        {% for log in loglist %}
+        <tr>
+            <td>{{log.date_time.strftime('%Y-%m-%d %H:%M:%S')}}</td>
+            <td colspan="2">{{log.log}}</td>
+            <td>{{log.log_type}}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <th colspan="4">No logs found</th>
+        </tr>
+        {% endif %}
+    </table>
+</div>
+<br>
+</td>
+{% endblock %}

@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, request, \
 from flask_login import login_required
 from webapp import db
 from webapp.models.devices import Devices, Backups
+from webapp.models.logging import Logging
 from webapp.bin.backup import Device_Backup
 
 main = Blueprint('main', __name__, template_folder='templates',
@@ -118,23 +119,23 @@ def device_delete(id):
 @login_required
 def device_backup(did):
     device = db.session.query(Devices).filter_by(id=did).first()
-    try:
-        backup = Device_Backup(device.device_ip,
-                               device.username,
-                               device.password,
-                               device.ssh_port,
-                               device.conn_type)
+    backup = Device_Backup(device.device_ip,
+                           device.username,
+                           device.password,
+                           device.ssh_port,
+                           device.conn_type)
+    # print(backup)
+    if backup == -1:
+        flash('No backup was made, please check logs.')
+        return redirect(url_for('main.backup_list', did=did))
+    else:
         new_backup = Backups(device_id=device.id,
                              filename=device.name,
                              filedata=backup)
-        # Need to log a success here.
-    except ValueError:
-        # Need to log the errors here
-        pass
 
-    db.session.add(new_backup)
-    db.session.commit()
-    return redirect(url_for('main.backup_list', did=did))
+        db.session.add(new_backup)
+        db.session.commit()
+        return redirect(url_for('main.backup_list', did=did))
 
 
 @main.route('/backup_list/<int:did>', methods=['GET'])
@@ -164,3 +165,19 @@ def backup_delete(did, bid):
     db.session.query(Backups).filter_by(id=bid).delete()
     db.session.commit()
     return redirect(url_for('main.backup_list', did=did))
+
+
+@main.route('/logs_view')
+@login_required
+def logs_view():
+    log_list = db.session.query(Logging).all()
+    return render_template('main/logs_view.html', loglist=log_list)
+
+
+@main.route('/logs_delete')
+@login_required
+def logs_delete():
+    db.session.query(Logging).delete()
+    db.session.commit()
+    flash('All logs deleted.')
+    return redirect(url_for('main.logs_view'))

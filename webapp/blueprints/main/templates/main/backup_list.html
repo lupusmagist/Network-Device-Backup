@@ -6,6 +6,20 @@
 </h1>
 <div style="overflow-x:auto;">
     <table id="device_mod_table" class="centerTable">
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <tr>
+            <td colspan="2">
+                <div class="notification is-danger">
+                    {{ messages[0] }}.
+                </div>
+            </td>
+        </tr>
+        {% endif %}
+        {% endwith %}
+
+        {% if backuplist|length > 0 %}
         <tr>
             <th>Date</th>
             <th colspan="2"></th>
@@ -25,6 +39,11 @@
             </td>
         </tr>
         {% endfor %}
+        {% else %}
+        <tr>
+            <th colspan="4">No backups found</th>
+        </tr>
+        {% endif %}
     </table>
 </div>
 <br>
