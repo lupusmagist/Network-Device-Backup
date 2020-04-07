@@ -1,5 +1,6 @@
 """ Settings File """
 from datetime import timedelta
+from webapp import env
 
 
 class Config:
@@ -9,24 +10,29 @@ class Config:
 
     APP_NAME = 'Device Manager'
 
-    DEBUG = False
-    TESTING = False
-
-    BUILD_CLEAN = False
     SECRET_KEY = '1q2w3e4r5'
 
     # Celery.
-    CELERY_BROKER_URL = 'redis://:devpassword@redis:6379/0'
-    CELERY_RESULT_BACKEND = 'redis://:devpassword@redis:6379/0'
+    CELERY_BROKER_URL = 'redis://redis:6379/0'
+    CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
     CELERY_ACCEPT_CONTENT = ['json']
     CELERY_TASK_SERIALIZER = 'json'
     CELERY_RESULT_SERIALIZER = 'json'
     CELERY_REDIS_MAX_CONNECTIONS = 5
+    CELERY_TIMEZONE = "UTC"
 
     # User.
     SEED_ADMIN_EMAIL = 'dev@local.host'
     SEED_ADMIN_PASSWORD = 'devpassword'
     REMEMBER_COOKIE_DURATION = timedelta(days=90)
+
+    # Flask-Mail configuration
+    MAIL_SERVER = 'smtp.googlemail.com'
+    MAIL_PORT = 587
+    MAIL_USE_TLS = True
+    MAIL_USERNAME = env.str('MAIL_USERNAME')
+    MAIL_PASSWORD = env.str('MAIL_PASSWORD')
+    MAIL_DEFAULT_SENDER = 'flask@example.com'
 
 
 class ProductionConfig(Config):

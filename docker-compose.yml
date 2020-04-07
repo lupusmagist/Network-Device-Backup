@@ -14,12 +14,30 @@ services:
       - DEBIAN_FRONTEND=noninteractive
     depends_on:
       - database
+      - redis
     volumes:
       - '.:/webapp'
       # Format is: Path on host:absolute path in container (Mountpoint)
       # - 'data-volume:/data'
     ports:
       - '8000:8000'
+
+  appworker:
+    build:
+      context: ./webapp
+    hostname: worker
+    command: >
+      celery worker -A webapp.celery_app --loglevel=info
+    depends_on:
+      - redis
+    volumes:
+      - '.:/webapp'
+
+  redis:
+    container_name: redis_dev_container
+    image: redis
+    ports:
+      - "6379:6379"
 
   nginx:
     image: 'nginx:1.17-alpine'
