@@ -4,11 +4,21 @@
 <h1 class="title">
     Logs:
 </h1>
-<div>
-    <a class="button is-primary is-inverted is-outlined" href="{{ url_for('main.logs_delete') }}">
-        Clear Logs
-    </a>
-</div>
+<table class="centerTable">
+    <tr>
+        <td style="padding-right: 10px;" colspan="2">
+            <a class="button is-primary is-inverted is-outlined" href="{{ url_for('main.logs_delete') }}">
+                Clear Logs
+            </a>
+        </td>
+
+        <td style="padding-left: 10px;" colspan="2">
+            <a class="button is-primary is-inverted is-outlined" href="{{ url_for('main.logs_mail') }}">
+                Email Logs
+            </a>
+        </td>
+    </tr>
+</table>
 <br>
 
 <div style="overflow-x:auto;">
@@ -17,7 +27,7 @@
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <tr>
-            <td colspan="3">
+            <td colspan="4">
                 <div class="notification is-danger">
                     {{ messages[0] }}.
                 </div>

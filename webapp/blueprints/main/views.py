@@ -1,10 +1,14 @@
 from flask import Blueprint, render_template, request, \
     flash, redirect, url_for, Response
-from flask_login import login_required
+from flask import current_app as app
+from flask_login import login_required, current_user
+from flask_mail import Message
 from webapp import db
+from webapp.models.user import Web_User
 from webapp.models.devices import Devices, Backups
 from webapp.models.logging import Logging
 from webapp.bin.backup import Device_Backup
+from webapp.tasks.celery_tasks import send_async_email
 
 main = Blueprint('main', __name__, template_folder='templates',
                  static_folder='static', static_url_path='/main/static')
@@ -13,6 +17,11 @@ main = Blueprint('main', __name__, template_folder='templates',
 @main.route('/')
 def index():
     return render_template('main/index.html')
+
+
+@main.route('/healthy')
+def healthy():
+    return ('', 200)
 
 
 @main.route('/home')
@@ -181,3 +190,29 @@ def logs_delete():
     db.session.commit()
     flash('All logs deleted.')
     return redirect(url_for('main.logs_view'))
+
+
+@main.route('/logs_mail', methods=['GET'])
+@login_required
+def logs_mail():
+    log_list = db.session.query(Logging).all()
+    User = db.session.query(Web_User).filter_by(id=current_user.id).first()
+    # user_email = User.email
+    # send the email
+    # email = current_app
+
+    # msg = Message("Logs from the Device Backup system",
+    #              recipients=[User.email])
+    # msg.body = 'Please find attahced your backup logs as requested.'
+    # msg.html = render_template('main/mail_logs.html', loglist=log_list)
+    html = render_template('main/mail_logs.html', loglist=log_list)
+    email_data = {
+        'subject': 'Logs from the Device Backup system',
+        'to': User.email,
+        'body': html
+    }
+
+    send_async_email.delay(email_data)
+
+    flash('Sending email to {0}'.format(User.email))
+    return render_template('main/logs_view.html', loglist=log_list)

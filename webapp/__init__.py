@@ -2,12 +2,13 @@ from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from environs import Env
-from flask_mail import Mail
 from celery import Celery
+from flask_mail import Mail
 
 env = Env()
 db = SQLAlchemy()
 celery = Celery()
+mail = Mail()
 
 
 def create_app(settings_override=None):
@@ -33,11 +34,10 @@ def create_app(settings_override=None):
     # init the DB
     db.init_app(app)
 
-    # Init mail
-    mail = Mail(app)
-
     # Celery
     init_celery(app)
+
+    mail.init_app(app)
 
     # Import the database models
     from webapp.models.user import Web_User
@@ -71,6 +71,24 @@ def create_app(settings_override=None):
 
 def init_celery(app=None):
     app = app or create_app()
+    celery = Celery(__name__, broker=app.config['CELERY_BROKER_URL'])
+    celery.conf.update(app.config)
+    TaskBase = celery.Task
+
+    class ContextTask(TaskBase):
+        abstract = True
+
+        def __call__(self, *args, **kwargs):
+            with app.app_context():
+                return TaskBase.__call__(self, *args, **kwargs)
+
+    celery.Task = ContextTask
+    celery.app = app
+    return celery
+
+
+'''
+def init_celery(app):
     celery = Celery(
         app.import_name,
         backend=app.config['CELERY_RESULT_BACKEND'],
@@ -87,6 +105,7 @@ def init_celery(app=None):
 
     celery.Task = ContextTask
     return celery
+'''
 
 
 def add_default_user():

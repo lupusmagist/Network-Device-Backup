@@ -1,0 +1,8 @@
+{% if loglist|length > 0 %}
+Date, Event, Type
+{% for log in loglist %}
+{{log.date_time.strftime('%Y-%m-%d %H:%M:%S')}}, {{log.log}}, {{log.log_type}}
+{% endfor %}
+{% else %}
+No logs found
+{% endif %}

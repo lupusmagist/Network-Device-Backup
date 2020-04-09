@@ -1,19 +1,15 @@
 
-from webapp import celery, config, mail, app
+from webapp import mail
+from flask import current_app
 from flask_mail import Message
+from celery import shared_task
 
 
-@celery.task
-def dummy_task():
-    return "OK"
-
-
-@celery.task
+@shared_task
 def send_async_email(email_data):
     """Background task to send an email with Flask-Mail."""
     msg = Message(email_data['subject'],
-                  sender=config['MAIL_DEFAULT_SENDER'],
+                  sender=current_app.config['MAIL_DEFAULT_SENDER'],
                   recipients=[email_data['to']])
     msg.body = email_data['body']
-    with app.app_context():
-        mail.send(msg)
+    mail.send(msg)

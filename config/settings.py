@@ -13,8 +13,8 @@ class Config:
     SECRET_KEY = '1q2w3e4r5'
 
     # Celery.
-    CELERY_BROKER_URL = 'redis://redis:6379/0'
-    CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+    CELERY_BROKER_URL = 'amqp://admin:pass@rabbit:5672'
+    CELERY_RESULT_BACKEND = 'rpc://'
     CELERY_ACCEPT_CONTENT = ['json']
     CELERY_TASK_SERIALIZER = 'json'
     CELERY_RESULT_SERIALIZER = 'json'
@@ -27,12 +27,14 @@ class Config:
     REMEMBER_COOKIE_DURATION = timedelta(days=90)
 
     # Flask-Mail configuration
-    MAIL_SERVER = 'smtp.googlemail.com'
-    MAIL_PORT = 587
-    MAIL_USE_TLS = True
+    MAIL_SERVER = 'mail.danchan.co.za'
+    MAIL_PORT = 465
+    MAIL_USE_TLS = False
+    MAIL_USE_SSL = True
     MAIL_USERNAME = env.str('MAIL_USERNAME')
     MAIL_PASSWORD = env.str('MAIL_PASSWORD')
-    MAIL_DEFAULT_SENDER = 'flask@example.com'
+    MAIL_DEFAULT_SENDER = 'danie@danchan.co.za'
+    MAIL_ADMIN = 'danie@danchan.co.za'
 
 
 class ProductionConfig(Config):
