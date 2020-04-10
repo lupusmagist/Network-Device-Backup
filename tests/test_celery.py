@@ -1,6 +1,7 @@
 import pytest
 
 from webapp.tasks.celery_tasks import dummy_task
+# from webapp.celery_app import dummy_task
 
 
 @pytest.mark.usefixtures('celery_session_app')

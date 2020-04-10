@@ -8,7 +8,7 @@ WORKDIR $INSTALL_PATH
 COPY requirements.txt requirements.txt
 
 ENV BUILD_DEPS="build-essential" \
-  APP_DEPS="curl libpq-dev tzdata"
+  APP_DEPS="curl libpq-dev"
 
 RUN apt-get update \
   && apt-get install -y ${BUILD_DEPS} ${APP_DEPS} --no-install-recommends \

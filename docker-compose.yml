@@ -40,7 +40,21 @@ services:
       context: ./webapp
     hostname: worker
     command: >
-      celery worker -A webapp.celery_app
+      celery worker -A webapp.celery_app --uid=nobody --gid=nogroup
+      --loglevel=info
+    depends_on:
+      - rabbit
+    links:
+        - rabbit
+    volumes:
+      - '.:/webapp'
+
+  appworker-beat:
+    build:
+      context: ./webapp
+    hostname: worker-beat
+    command: >
+      celery beat -A webapp.celery_app --uid=nobody --gid=nogroup
       --loglevel=info
     depends_on:
       - rabbit
@@ -54,8 +68,10 @@ services:
       context: ./webapp
     hostname: workermonitor
     command: >
-      flower -A webapp.celery_app --port=8009
+      flower -A webapp.celery_app --port=8009 --loglevel=info
     depends_on:
+      - appworker
+      - appworker-beat
       - rabbit
     links:
         - rabbit

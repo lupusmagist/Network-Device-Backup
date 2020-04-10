@@ -1,8 +1,6 @@
 from flask import Blueprint, render_template, request, \
     flash, redirect, url_for, Response
-from flask import current_app as app
 from flask_login import login_required, current_user
-from flask_mail import Message
 from webapp import db
 from webapp.models.user import Web_User
 from webapp.models.devices import Devices, Backups
