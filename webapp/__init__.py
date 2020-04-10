@@ -11,7 +11,7 @@ celery = Celery()
 mail = Mail()
 
 
-def create_app(settings_override=None):
+def create_app(settings_override=None, testing=False):
     """
     Create a Flask application using the app factory pattern.
     We pass in the config that we want to use in the settings file
@@ -25,7 +25,11 @@ def create_app(settings_override=None):
     # Load config from file
     env.read_env()
     FLASK_DEBUG = env.bool("FLASK_DEBUG")
-    if FLASK_DEBUG:
+    TESTING = testing
+    if TESTING:
+        app.config.from_object('config.settings.TestingConfig')
+        print('running in test mode')
+    elif FLASK_DEBUG:
         app.config.from_object('config.settings.DevelopmentConfig')
         print('running in debug mode')
     else:
@@ -61,7 +65,7 @@ def create_app(settings_override=None):
     app.register_blueprint(main)
     app.register_blueprint(auth, url_prefix='/auth')
 
-    # Create tables for our models
+    # Create tables for our models when running normaly
     with app.app_context():
         db.create_all()
         add_default_user()
@@ -85,27 +89,6 @@ def init_celery(app=None):
     celery.Task = ContextTask
     celery.app = app
     return celery
-
-
-'''
-def init_celery(app):
-    celery = Celery(
-        app.import_name,
-        backend=app.config['CELERY_RESULT_BACKEND'],
-        broker=app.config['CELERY_BROKER_URL']
-    )
-    celery.conf.update(app.config)
-
-    class ContextTask(celery.Task):
-        """Make celery tasks work with Flask app context"""
-
-        def __call__(self, *args, **kwargs):
-            with app.app_context():
-                return self.run(*args, **kwargs)
-
-    celery.Task = ContextTask
-    return celery
-'''
 
 
 def add_default_user():

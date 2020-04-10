@@ -6,6 +6,11 @@ from celery import shared_task
 
 
 @shared_task
+def dummy_task():
+    return "OK"
+
+
+@shared_task
 def send_async_email(email_data):
     """Background task to send an email with Flask-Mail."""
     msg = Message(email_data['subject'],
