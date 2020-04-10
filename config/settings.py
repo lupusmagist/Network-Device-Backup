@@ -1,7 +1,10 @@
 """ Settings File """
 from datetime import timedelta
-from webapp import env
+from environs import Env
 from celery.schedules import crontab
+
+env = Env()
+env.read_env()
 
 
 class Config:
@@ -35,9 +38,10 @@ class Config:
             # 'schedule': crontab(minute=1),
         },
     }
+
     # User.
-    SEED_ADMIN_EMAIL = 'dev@local.host'
-    SEED_ADMIN_PASSWORD = 'devpassword'
+    SEED_ADMIN_EMAIL = 'devbackup@danchan.co.za'
+    SEED_ADMIN_PASSWORD = env.str('MAIL_PASSWORD')
     REMEMBER_COOKIE_DURATION = timedelta(days=90)
 
     # Flask-Mail configuration
@@ -57,6 +61,7 @@ class ProductionConfig(Config):
 
 
 class DevelopmentConfig(Config):
+    FLASK_DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///db.sqlite'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 

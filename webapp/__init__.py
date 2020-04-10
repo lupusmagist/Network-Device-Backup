@@ -4,14 +4,26 @@ from flask_sqlalchemy import SQLAlchemy
 from environs import Env
 from celery import Celery
 from flask_mail import Mail
+from config.settings import DevelopmentConfig, ProductionConfig, TestingConfig
 
 env = Env()
+
+env.read_env()
+if env.bool("FLASK_DEBUG"):
+    appconfig = DevelopmentConfig()
+else:
+    appconfig = ProductionConfig()
+
+if env.bool("TESTING"):
+    appconfig = TestingConfig()
+
+
 db = SQLAlchemy()
 celery = Celery()
 mail = Mail()
 
 
-def create_app(settings_override=None, testing=False):
+def create_app():
     """
     Create a Flask application using the app factory pattern.
     We pass in the config that we want to use in the settings file
@@ -20,20 +32,11 @@ def create_app(settings_override=None, testing=False):
     """
 
     # Initialize the app
-    app = Flask(__name__, instance_relative_config=False)
-
-    # Load config from file
-    env.read_env()
-    FLASK_DEBUG = env.bool("FLASK_DEBUG")
-    TESTING = testing
-    if TESTING:
-        app.config.from_object('config.settings.TestingConfig')
-        print('running in test mode')
-    elif FLASK_DEBUG:
-        app.config.from_object('config.settings.DevelopmentConfig')
-        print('running in debug mode')
-    else:
-        app.config.from_object('config.settings.ProductionConfig')
+    # app = Flask(__name__, instance_relative_config=False)
+    app = Flask(__name__)
+    app.config.from_object(appconfig)
+    if appconfig.FLASK_DEBUG:
+        print('Running in debug mode')
 
     # init the DB
     db.init_app(app)
