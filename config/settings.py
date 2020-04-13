@@ -61,7 +61,7 @@ class ProductionConfig(Config):
 
 
 class DevelopmentConfig(Config):
-    FLASK_DEBUG = True
+    DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///db.sqlite'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 

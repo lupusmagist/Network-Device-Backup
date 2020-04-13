@@ -14,7 +14,7 @@ from celery import shared_task
 
 
 @shared_task
-def dummy_task_1():
+def dummy_task():
     return "OK"
 
 

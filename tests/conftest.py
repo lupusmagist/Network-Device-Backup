@@ -4,7 +4,7 @@ from webapp import create_app
 
 @pytest.fixture
 def app():
-    app = create_app(testing=True)
+    app = create_app('testing')
     return app
 
 
