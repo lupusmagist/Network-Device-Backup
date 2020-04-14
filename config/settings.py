@@ -56,7 +56,11 @@ class Config:
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:1q2w3e4r5@database/DM'
+    POSTGRES_USER = env.str('POSTGRES_USER')
+    POSTGRES_PASSWORD = env.str('POSTGRES_PASSWORD')
+    POSTGRES_DB = env.str('POSTGRES_DB')
+    SQLALCHEMY_DATABASE_URI = 'postgresql://' + POSTGRES_USER + \
+        ':' + POSTGRES_PASSWORD + '@database/' + POSTGRES_DB
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
@@ -67,5 +71,6 @@ class DevelopmentConfig(Config):
 
 
 class TestingConfig(Config):
+    TESTING = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
     SQLALCHEMY_TRACK_MODIFICATIONS = False

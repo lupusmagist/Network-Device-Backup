@@ -3,15 +3,18 @@ from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from celery import Celery
 from flask_mail import Mail
+from environs import Env
 from config.settings import DevelopmentConfig, ProductionConfig, TestingConfig
 
+env = Env()
+env.read_env()
 
 db = SQLAlchemy()
 celery = Celery()
 mail = Mail()
 
 
-def create_app(config):
+def create_app(testing=False):
     """
     Create a Flask application using the app factory pattern.
     We pass in the config that we want to use in the settings file
@@ -23,17 +26,16 @@ def create_app(config):
     # app = Flask(__name__, instance_relative_config=False)
     app = Flask(__name__)
 
-    if config == 'debug' or config == 'DEBUG' or config == 'Debug':
+    if env.bool('DEBUG'):
         app.config.from_object(DevelopmentConfig())
         print('Running in debug mode')
-    elif config == 'production' or config == 'PRODUCTION' or config == 'Production':
+    else:
         app.config.from_object(ProductionConfig())
         print('Running in production mode')
-    elif config == 'testing' or config == 'TESTING' or config == 'Testing':
+
+    if testing:
         app.config.from_object(TestingConfig())
-        print('Running in production mode')
-    elif config == '':
-        print('Please supply a config mode, debug/production/testing.')
+        print('Running in testing mode')
 
     # init the DB
     db.init_app(app)
@@ -108,5 +110,5 @@ def add_default_user():
 
 
 if __name__ == '__main__':
-    app = create_app('debug')
+    app = create_app()
     app.run('127.0.0.1', 5000, debug='true')
