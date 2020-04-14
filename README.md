@@ -8,7 +8,7 @@ Commands are issued to the device to create a text export and this export is sav
 
 For that app to run Docker and Docker-Compose has to be installed on the host.
 Configuration for Docker is via docker-compose.yml.
-Default settings will start app in defualt Docker mode.
+Default settings will start app in default Docker mode.
 
 If you have a existing web server that you would like to use, disable the Nginx section in the docker-compose.yml and use the nginx.conf in the websrv folder as template to configure your web server.
 
@@ -49,14 +49,14 @@ DEBUG=False
 ### Running as a standalone app.
 Python 3.6+, PIP must be installed on the host.
 
-A virtual enviroment is recommened unless the server will be a virtual machine for just this prupose.
+A virtual environment is recommened unless the server will be a virtual machine for just this prupose.
 
 * Follow the instructions as above, just without the Docker commands.
 * Install RabbitMQ server on your host and ensure that it is running.
 * Adjust the settings.py file to reflect the your database settings.. or
 just copy the Debug database string to the production settings, the app will then use SQLite as the database, no extra depenencies needed.
 
-* Switch to your virtual enviroment in the main app folder.
+* Switch to your virtual environment in the main app folder.
 * run - pip install -r webapp/requirements.txt
 * run - celery -A webapp.celery_app worker --loglevel=INFO --detach --pidfile=''
 * run - celery -A webapp.celery_app beat --loglevel=INFO --detach --pidfile=''
